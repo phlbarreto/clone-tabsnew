@@ -83,6 +83,12 @@ async function getLastEmail() {
   return lastEmailItem;
 }
 
+function extractToken(text) {
+  const startTokenIndex = text.search(/r[/]/) + 2;
+  const endTokenIndex = text.search(/Atenc/) - 2;
+  return text.slice(startTokenIndex, endTokenIndex);
+}
+
 const orchestrator = {
   waitForAllServices,
   clearDatabase,
@@ -91,6 +97,7 @@ const orchestrator = {
   createSession,
   deleteAllEmails,
   getLastEmail,
+  extractToken,
 };
 
 export default orchestrator;
