@@ -31,13 +31,13 @@ async function getConnectionsActiveDb() {
   return connections;
 }
 
-async function getHandler(req, res) {
+async function getHandler(request, response) {
   const updated_at = new Date().toISOString();
   const version = await getVersionDb();
   const max_connections = await getMaxConnectionsDb();
   const connections = await getConnectionsActiveDb();
 
-  res.status(200).json({
+  response.status(200).json({
     updated_at,
     dependencies: {
       database: {

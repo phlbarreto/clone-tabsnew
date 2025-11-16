@@ -9,16 +9,16 @@ router.patch(patchHandler);
 
 export default router.handler(controller.errorsHandler);
 
-async function getHandler(req, res) {
-  const username = req.query.username;
+async function getHandler(request, response) {
+  const username = request.query.username;
   const userFound = await user.findOneByUsername(username);
-  return res.status(200).json(userFound);
+  return response.status(200).json(userFound);
 }
 
-async function patchHandler(req, res) {
-  const username = req.query.username;
-  const userInputValues = req.body;
+async function patchHandler(request, response) {
+  const username = request.query.username;
+  const userInputValues = request.body;
 
   const updatedUser = await user.update(username, userInputValues);
-  return res.status(200).json(updatedUser);
+  return response.status(200).json(updatedUser);
 }

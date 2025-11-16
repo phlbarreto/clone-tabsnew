@@ -9,12 +9,12 @@ router.post(postHandler);
 
 export default router.handler(controller.errorsHandler);
 
-async function postHandler(req, res) {
-  const userInputValues = req.body;
+async function postHandler(request, response) {
+  const userInputValues = request.body;
   const newUser = await user.create(userInputValues);
 
   const activationToken = await activation.create(newUser.id);
   await activation.sendEmailToUser(newUser, activationToken);
 
-  return res.status(201).json(newUser);
+  return response.status(201).json(newUser);
 }
