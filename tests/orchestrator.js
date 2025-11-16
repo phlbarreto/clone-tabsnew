@@ -91,7 +91,7 @@ function extractToken(text) {
 }
 
 async function activateUser(userId) {
-  await activation.activateUserByUserId(userId);
+  return await activation.activateUserByUserId(userId);
 }
 
 const orchestrator = {
