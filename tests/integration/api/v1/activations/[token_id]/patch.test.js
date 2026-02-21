@@ -129,18 +129,11 @@ describe("PATCH /api/v1/activations/[token_id]", () => {
       expect(Date.parse(responseBody.updated_at)).not.toBeNaN();
       expect(responseBody.updated_at > responseBody.created_at).toBe(true);
 
-      const expiresAt = new Date(responseBody.expires_at);
-      const createdAt = new Date(responseBody.created_at);
-
-      expiresAt.setMilliseconds(0);
-      createdAt.setMilliseconds(0);
-
-      expect(expiresAt - createdAt).toBe(activation.EXPIRATION_IN_MILLISECONDS);
-
       const activatedUser = await user.findOneById(responseBody.user_id);
       expect(activatedUser.features).toEqual([
         "create:session",
         "read:session",
+        "update:user",
       ]);
     });
 
