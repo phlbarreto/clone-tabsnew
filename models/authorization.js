@@ -106,6 +106,25 @@ function filterOutput(user, feature, resource) {
       };
     });
   }
+
+  if (feature === "read:status") {
+    const output = {
+      dependencies: {
+        database: {
+          max_connections: resource.dependencies.database.max_connections,
+          opened_connections: resource.dependencies.database.opened_connections,
+        },
+      },
+      updated_at: resource.updated_at,
+    };
+
+    if (can(user, "read:status:all")) {
+      output.dependencies.database.version =
+        resource.dependencies.database.version;
+    }
+
+    return output;
+  }
 }
 
 function validateUser(user) {
@@ -128,7 +147,8 @@ function validateFeature(feature) {
 function validateResource(resource) {
   if (!resource) {
     throw new InternalServerError({
-      cause: "É necessário fornecer `resource` no model `authorization.filterOutput()`",
+      cause:
+        "É necessário fornecer `resource` no model `authorization.filterOutput()`",
     });
   }
 }

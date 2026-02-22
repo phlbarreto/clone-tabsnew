@@ -35,15 +35,12 @@ async function getConnectionsActiveDb() {
 
 async function getHandler(request, response) {
   const userTryingToGet = request.context.user;
-
   const updated_at = new Date().toISOString();
-  const version = authorization.can(userTryingToGet, "read:status:all")
-    ? await getVersionDb()
-    : null;
+  const version = await getVersionDb();
   const max_connections = await getMaxConnectionsDb();
   const connections = await getConnectionsActiveDb();
 
-  response.status(200).json({
+  const status = {
     updated_at,
     dependencies: {
       database: {
@@ -52,5 +49,13 @@ async function getHandler(request, response) {
         opened_connections: connections,
       },
     },
-  });
+  };
+
+  const secureOutputValues = authorization.filterOutput(
+    userTryingToGet,
+    "read:status",
+    status,
+  );
+  
+  response.status(200).json(secureOutputValues);
 }
