@@ -40,7 +40,6 @@ function DatabaseInfo() {
   });
 
   const database = {
-    version: "Carregando...",
     maxConnections: "Carregando...",
     openedConnectios: "Carregando...",
   };
@@ -56,7 +55,9 @@ function DatabaseInfo() {
     <div style={{ marginLeft: 1.5 + "rem" }}>
       <h3>Banco de dados:</h3>
       <div style={{ marginLeft: 1.5 + "rem" }}>
-        <p>Versão do Postgres: {database.version}</p>
+        {database.version !== null && (
+          <p>Versão do Postgres: {database.version}</p>
+        )}
         <p>Conexões disponíveis: {database.maxConnections}</p>
         <p>Conexões abertas: {database.openedConnectios}</p>
       </div>

@@ -20,7 +20,7 @@ describe("GET /api/v1/user", () => {
       expect(responseBody).toEqual({
         name: "ForbiddenError",
         message: "Você não possui permissão para executar esta ação.",
-        action: 'Verifique se o seu usuário possui a feature "read:session".',
+        action: "Verifique se o seu usuário possui a feature 'read:session'.",
         status_code: 403,
       });
     });
@@ -54,7 +54,6 @@ describe("GET /api/v1/user", () => {
         id: createdUser.id,
         username: "UserWithValidSession",
         email: createdUser.email,
-        password: createdUser.password,
         features: ["create:session", "read:session", "update:user"],
         created_at: createdUser.created_at.toISOString(),
         updated_at: activatedUser.updated_at.toISOString(),
@@ -195,7 +194,6 @@ describe("GET /api/v1/user", () => {
         username: "UserWithAlmostInvalidSession",
         email: createdUser.email,
         features: ["create:session", "read:session", "update:user"],
-        password: createdUser.password,
         created_at: createdUser.created_at.toISOString(),
         updated_at: activatedUser.updated_at.toISOString(),
       });
