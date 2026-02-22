@@ -65,7 +65,7 @@ describe("models/authorization", () => {
       }).toThrow(InternalServerError);
     });
 
-    test("with valid `user`, known `features` but no resource ", () => {
+    test("with valid `user`, known `features` but no resource", () => {
       const createdUser = {
         features: ["read:user"],
       };
