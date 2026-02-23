@@ -5,6 +5,7 @@ import database from "infra/database.js";
 import migrator from "models/migrator.js";
 import user from "models/user.js";
 import session from "models/session.js";
+import activation from "models/activation.js";
 
 const emailHttpUrl = `http://${process.env.EMAIL_HTTP_HOST}:${process.env.EMAIL_HTTP_PORT}`;
 
@@ -71,6 +72,8 @@ async function getLastEmail() {
   const emailListBody = await emailListResponse.json();
   const lastEmailItem = emailListBody.pop();
 
+  if (!lastEmailItem) return null;
+
   const emailTextResponse = await fetch(
     `${emailHttpUrl}/messages/${lastEmailItem.id}.plain`,
   );
@@ -81,6 +84,21 @@ async function getLastEmail() {
   return lastEmailItem;
 }
 
+function extractToken(text) {
+  const startTokenIndex = text.search(/r[/]/) + 2;
+  const endTokenIndex = text.search(/Atenc/) - 2;
+  return text.slice(startTokenIndex, endTokenIndex);
+}
+
+async function activateUser(userId) {
+  return await activation.activateUserByUserId(userId);
+}
+
+async function addFeaturesToUser(userId, features) {
+  const updatedUser = await user.addFeatures(userId, features);
+  return updatedUser;
+}
+
 const orchestrator = {
   waitForAllServices,
   clearDatabase,
@@ -89,6 +107,9 @@ const orchestrator = {
   createSession,
   deleteAllEmails,
   getLastEmail,
+  extractToken,
+  activateUser,
+  addFeaturesToUser,
 };
 
 export default orchestrator;
